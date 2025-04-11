@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { floatingAnimation, pulseAnimation, confettiAnimation } from '@/utils/animations';
@@ -68,28 +67,16 @@ const ForgiveSection = () => {
   }, [forgiven]);
   
   const handleForgiveness = () => {
-    if (containerRef.current) {
-      // Create flower confetti
-      confettiAnimation(containerRef.current);
-      
-      // Add a second burst of confetti after a delay
-      setTimeout(() => {
-        confettiAnimation(containerRef.current);
-      }, 300);
-      
-      // Add a third burst for good measure
-      setTimeout(() => {
-        confettiAnimation(containerRef.current);
-      }, 600);
-      
-      setForgiven(true);
-      
-      toast({
-        title: "Thank You, Newlin! ❤️",
-        description: "Your forgiveness blooms like the most beautiful flower.",
-        duration: 5000,
-      });
-    }
+    // Just trigger confetti animation - it now creates its own container
+    confettiAnimation(document.body);
+    
+    setForgiven(true);
+    
+    toast({
+      title: "Thank You, Newlin! ❤️",
+      description: "Your forgiveness blooms like the most beautiful flower.",
+      duration: 5000,
+    });
   };
   
   return (

@@ -1,3 +1,4 @@
+
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TextPlugin } from 'gsap/TextPlugin';
@@ -111,7 +112,18 @@ export const floatingAnimation = (element: string | Element, amplitude: number =
 // Flower confetti effect animation
 export const confettiAnimation = (container: string | Element) => {
   const colors = ['#FF719A', '#FDE1D3', '#E5DEFF', '#FEC6A1', '#D946EF'];
-  const numConfetti = 50;
+  const numConfetti = 100; // Increased number of flowers
+  
+  // Create a fixed position container that covers the entire screen
+  const fullScreenContainer = document.createElement('div');
+  fullScreenContainer.style.position = 'fixed';
+  fullScreenContainer.style.top = '0';
+  fullScreenContainer.style.left = '0';
+  fullScreenContainer.style.width = '100vw';
+  fullScreenContainer.style.height = '100vh';
+  fullScreenContainer.style.pointerEvents = 'none';
+  fullScreenContainer.style.zIndex = '9999';
+  document.body.appendChild(fullScreenContainer);
   
   // Create flower-shaped confetti elements
   for (let i = 0; i < numConfetti; i++) {
@@ -121,6 +133,10 @@ export const confettiAnimation = (container: string | Element) => {
     flowerContainer.style.width = `${Math.random() * 20 + 20}px`;
     flowerContainer.style.height = `${Math.random() * 20 + 20}px`;
     flowerContainer.style.position = 'absolute';
+    
+    // Distribute flowers across the entire screen initially
+    flowerContainer.style.top = `${Math.random() * 20}%`; // Start mostly from top
+    flowerContainer.style.left = `${Math.random() * 100}%`;
     
     // Create flower petals
     const petalCount = Math.floor(Math.random() * 3) + 5; // 5-7 petals
@@ -155,44 +171,47 @@ export const confettiAnimation = (container: string | Element) => {
     center.style.zIndex = '2';
     
     flowerContainer.appendChild(center);
+    fullScreenContainer.appendChild(flowerContainer);
     
-    if (typeof container === 'string') {
-      document.querySelector(container)?.appendChild(flowerContainer);
-    } else {
-      container.appendChild(flowerContainer);
-    }
-    
-    // Animate each flower
+    // Animate each flower falling from top to bottom
     gsap.fromTo(
       flowerContainer,
       {
-        x: 0,
         y: 0,
+        x: `${Math.random() * 100 - 50}`,
         scale: gsap.utils.random(0.6, 1.2),
         opacity: 1,
         rotation: 0
       },
       {
-        x: gsap.utils.random(-200, 200),
-        y: gsap.utils.random(-300, -100),
+        y: `${window.innerHeight + 100}px`, // Fall past bottom of screen
+        x: `+=${gsap.utils.random(-200, 200)}`,
         scale: gsap.utils.random(0.2, 0.8),
-        opacity: 0,
+        opacity: gsap.utils.random(0.4, 0.8),
         rotation: gsap.utils.random(-180, 180),
-        duration: gsap.utils.random(2, 4),
-        ease: "power2.out",
-        onComplete: () => {
-          if (flowerContainer.parentNode) {
-            flowerContainer.parentNode.removeChild(flowerContainer);
-          }
-        }
+        duration: gsap.utils.random(2, 3), // Duration within the 3 second window
+        ease: "power1.in"
       }
     );
     
     // Add spinning animation to each flower
     gsap.to(flowerContainer, {
       rotation: gsap.utils.random(-360, 360),
-      duration: gsap.utils.random(2, 4),
+      duration: gsap.utils.random(2, 3),
       ease: "power1.inOut"
     });
   }
+  
+  // Remove the container after 3 seconds
+  setTimeout(() => {
+    if (document.body.contains(fullScreenContainer)) {
+      gsap.to(fullScreenContainer, {
+        opacity: 0,
+        duration: 0.5,
+        onComplete: () => {
+          document.body.removeChild(fullScreenContainer);
+        }
+      });
+    }
+  }, 3000);
 };
