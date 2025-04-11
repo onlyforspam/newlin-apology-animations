@@ -1,4 +1,3 @@
-
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TextPlugin } from 'gsap/TextPlugin';
@@ -109,42 +108,91 @@ export const floatingAnimation = (element: string | Element, amplitude: number =
   });
 };
 
-// Confetti effect animation
+// Flower confetti effect animation
 export const confettiAnimation = (container: string | Element) => {
-  const colors = ['#9b87f5', '#7E69AB', '#D6BCFA', '#E5DEFF', '#8B5CF6'];
+  const colors = ['#FF719A', '#FDE1D3', '#E5DEFF', '#FEC6A1', '#D946EF'];
   const numConfetti = 50;
   
-  // Create confetti elements
+  // Create flower-shaped confetti elements
   for (let i = 0; i < numConfetti; i++) {
-    const element = document.createElement('div');
-    element.className = 'absolute w-3 h-3 rounded-full';
-    element.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-    element.style.zIndex = "10";
+    const flowerContainer = document.createElement('div');
+    flowerContainer.className = 'absolute';
+    flowerContainer.style.zIndex = "10";
+    flowerContainer.style.width = `${Math.random() * 20 + 20}px`;
+    flowerContainer.style.height = `${Math.random() * 20 + 20}px`;
+    flowerContainer.style.position = 'absolute';
     
-    if (typeof container === 'string') {
-      document.querySelector(container)?.appendChild(element);
-    } else {
-      container.appendChild(element);
+    // Create flower petals
+    const petalCount = Math.floor(Math.random() * 3) + 5; // 5-7 petals
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    
+    for (let j = 0; j < petalCount; j++) {
+      const petal = document.createElement('div');
+      const size = Math.random() * 10 + 8;
+      
+      petal.style.position = 'absolute';
+      petal.style.width = `${size * 0.5}px`;
+      petal.style.height = `${size}px`;
+      petal.style.backgroundColor = color;
+      petal.style.borderRadius = '50% 50% 50% 50% / 80% 80% 20% 20%';
+      petal.style.transformOrigin = 'bottom center';
+      petal.style.transform = `rotate(${(j * (360 / petalCount))}deg)`;
+      petal.style.opacity = '0.85';
+      
+      flowerContainer.appendChild(petal);
     }
     
-    // Animate each piece
+    // Add flower center
+    const center = document.createElement('div');
+    const centerSize = Math.random() * 5 + 5;
+    center.style.position = 'absolute';
+    center.style.width = `${centerSize}px`;
+    center.style.height = `${centerSize}px`;
+    center.style.backgroundColor = '#FFDA77';
+    center.style.borderRadius = '50%';
+    center.style.top = `calc(50% - ${centerSize/2}px)`;
+    center.style.left = `calc(50% - ${centerSize/2}px)`;
+    center.style.zIndex = '2';
+    
+    flowerContainer.appendChild(center);
+    
+    if (typeof container === 'string') {
+      document.querySelector(container)?.appendChild(flowerContainer);
+    } else {
+      container.appendChild(flowerContainer);
+    }
+    
+    // Animate each flower
     gsap.fromTo(
-      element,
+      flowerContainer,
       {
         x: 0,
         y: 0,
         scale: gsap.utils.random(0.6, 1.2),
-        opacity: 1
+        opacity: 1,
+        rotation: 0
       },
       {
-        x: gsap.utils.random(-150, 150),
-        y: gsap.utils.random(-200, -100),
-        scale: 0,
+        x: gsap.utils.random(-200, 200),
+        y: gsap.utils.random(-300, -100),
+        scale: gsap.utils.random(0.2, 0.8),
         opacity: 0,
         rotation: gsap.utils.random(-180, 180),
-        duration: gsap.utils.random(1.5, 3),
-        ease: "power2.out"
+        duration: gsap.utils.random(2, 4),
+        ease: "power2.out",
+        onComplete: () => {
+          if (flowerContainer.parentNode) {
+            flowerContainer.parentNode.removeChild(flowerContainer);
+          }
+        }
       }
     );
+    
+    // Add spinning animation to each flower
+    gsap.to(flowerContainer, {
+      rotation: gsap.utils.random(-360, 360),
+      duration: gsap.utils.random(2, 4),
+      ease: "power1.inOut"
+    });
   }
 };
