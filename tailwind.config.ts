@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,6 +51,11 @@ export default {
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
+				},
+				floral: {
+					light: '#FDE1D3',  // Soft peach
+					DEFAULT: '#FF719A', // Floral pink
+					dark: '#FF5A79',   // Dark floral pink
 				},
 				apology: {
 					light: '#E5DEFF',
