@@ -12,7 +12,7 @@ const ApologyMessage = () => {
     if (messageRef.current) {
       typewriterAnimation(
         messageRef.current,
-        "I'm truly sorry for the hurt I've caused. My words and actions were thoughtless. You deserve better, and I want to make things right. Your feelings matter to me, and I hope you can find it in your heart to forgive me.",
+        "Hey, Sorry Newlin Na pannunadhu thappu thaan. Enna mannichiru idhuku aproma inimel ipdi panna maaten.",
         0.5
       );
     }

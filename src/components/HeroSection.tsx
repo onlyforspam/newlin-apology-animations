@@ -27,7 +27,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <div className="min-h-[90vh] flex flex-col items-center justify-center relative overflow-hidden">
+    <div className="min-h-[80vh] flex flex-col items-center justify-center relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-floral-light/30 to-transparent z-0"></div>
       
       {/* Decorative flowers */}
@@ -45,11 +45,11 @@ const HeroSection = () => {
           ref={titleRef}
           className="text-6xl md:text-8xl font-bold text-floral-dark mb-8 text-shadow-lg"
         >
-          Newlin
+          Sorry Newlin 😔
         </h1>
         <p 
           ref={subtitleRef}
-          className="text-xl md:text-2xl text-secondary-foreground max-w-2xl mx-auto mb-12"
+          className="text-xl md:text-2xl text-floral-dark max-w-2xl mx-auto mb-12"
         >
           Sometimes words aren't enough, but with flowers they bloom...
         </p>
